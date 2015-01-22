@@ -36,3 +36,15 @@ Bugs?
 =====
 
 Please, contact with me
+
+
+Links
+=====
+
+http://habrahabr.ru/post/205122/
+
+http://mysyura.in.ua/otpravka-shlyuz-openvox/
+
+http://www.openvox.cn/pub/manuals/Release/English/VS-GW1600-20G%20User%20Manual.pdf
+
+http://www.openvox.cn/products/voip-gateways/gsm-gateways/148/vs-gw1600-gsm-series-detail.html
