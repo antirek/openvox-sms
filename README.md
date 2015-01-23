@@ -6,8 +6,8 @@ Intro
 =====
 
 OpenVox VoxStack GSM-gateway have inside Asterisk PBX (http://www.asterisk.org)
-Asterisk have AMI (Asterisk Manager Interface) - telnet connection 
-for exchange commands and events
+
+Asterisk have AMI (Asterisk Manager Interface) - telnet connection for exchange commands and events
 
 
 Install
