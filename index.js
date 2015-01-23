@@ -3,7 +3,7 @@ var Nami = require("nami");
 var osms = function (options) {
 
 	var options = options || {};
-	this.SPLIT_COUNT = 102;
+	this.SPLIT_COUNT = 120;
 
 	this.ami = new Nami.Nami({
 		host: options['host'] || 'localhost', 
