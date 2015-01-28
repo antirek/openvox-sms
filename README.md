@@ -48,3 +48,5 @@ http://mysyura.in.ua/otpravka-shlyuz-openvox/
 http://www.openvox.cn/pub/manuals/Release/English/VS-GW1600-20G%20User%20Manual.pdf
 
 http://www.openvox.cn/products/voip-gateways/gsm-gateways/148/vs-gw1600-gsm-series-detail.html
+
+http://openvox.qiniudn.com/pub/misc/GSM%20Gateway/OpenVox%20%20GSM%20Gateway%20HTTP%20Interface_en.pdf
