@@ -145,7 +145,7 @@ osms.prototype.isLongSMSText = function (text) {
 };
 
 osms.prototype.sendSMS = function (options, callback) {
-    if (options && options['text']) {        
+    if (options && options['text']) {
         this.setSMSsize(options['text']);
 
         if (this.isLongSMSText(options['text'])) {
