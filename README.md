@@ -36,19 +36,21 @@ sms.open(function () {
 API
 ===
 
-*new osms(options)*
+**new osms(options)**
+
 init osms object
 
 `````
 var sms = new osms({         //connect to Asterisk AMI
 	host: 'localhost',       //host
 	port: 5038,              //port
-	username,                //username
-	password,                //password
+	username: 'admin',       //username
+	password: 'admin',       //password
 	});
 `````
 
-*sms.open(callback)*
+**sms.open(callback)**
+
 connect to Asterisk in OpenVox VoxStack gsm gateway
 
 `````
@@ -58,9 +60,13 @@ sms.open(function () {
 `````
 
 
-*sms.sendSMS*
+**sms.sendSMS**
+
 send SMS via opened connection to Asterisk
+
 auto split long sms to array of csms
+
+all params are required
 
 `````
 sendSMS({
