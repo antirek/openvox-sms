@@ -27,7 +27,7 @@ osms.prototype.send = function (action, callback) {
     this.ami.send(action, callback);
 };
 
-osms.prototype.validateOptionsForOneSMS = function (options) {
+osms.prototype.validateOptionsForShortSMS = function (options) {
     if (!options || !options['span'] || !options['number'] || 
         !options['text'] || !options['timeout']) {
 
@@ -79,9 +79,9 @@ osms.prototype.getSendCSMSCommand = function (options) {
         ].join(' ');
 };
 
-osms.prototype.sendOneSMS = function (options, callback) {
+osms.prototype.sendShortSMS = function (options, callback) {
     options['timeout'] = options['timeout'] || '20';
-    this.validateOptionsForOneSMS(options);
+    this.validateOptionsForShortSMS(options);
 
     var Command = new Nami.Actions.Command();
     Command.command = this.getSendSMSCommand(options);
@@ -104,12 +104,10 @@ osms.prototype.splitText = function (text) {
     return text.match(new RegExp('.{1,' + this.CSMS_SIZE + '}', 'g'));
 };
 
-osms.prototype.sendLongSMS = function (options, callback) {
-    var responses = [],
-        array = this.splitText(options['text']);
-
-    array.map(function (text, i, array) {
-        opts = {
+osms.prototype.prepareCSMSArray = function (options) {
+    var array = this.splitText(options['text']);
+    return array.map(function (text, i, array) {
+        return {
             span: options['span'],
             number: options['number'],
             text: text,
@@ -118,33 +116,42 @@ osms.prototype.sendLongSMS = function (options, callback) {
             smssequence: i + 1,
             timeout: options['timeout'] || 20
         };
+    });
+};
 
-        this.sendCSMS(opts, function (response) {
+osms.prototype.sendLongSMS = function (options, callback) {
+    var responses = [],
+        array = this.prepareCSMSArray(options);
+
+    array.map(function (csms, i, array) {
+        this.sendCSMS(csms, function (response) {
             responses.push(response);
             if (i == array.length - 1) {
                 callback(responses);
             }
         });
-
     }, this);
 };
 
-osms.prototype.setSMSsize = function (text){
+osms.prototype.setSMSsize = function (text) {
     if (!this.isASCII(text)) {  //default 7bit        
         this.SMS_SIZE = 70;     //16bit
         this.CSMS_SIZE = 70 - 3;
-    }
+    };
+};
+
+osms.prototype.isLongSMSText = function (text) {
+    return text.length > this.SMS_SIZE;
 };
 
 osms.prototype.sendSMS = function (options, callback) {
-    if (options && options['text']) {
-        
+    if (options && options['text']) {        
         this.setSMSsize(options['text']);
 
-        if (options['text'].length > this.SMS_SIZE) {
+        if (this.isLongSMSText(options['text'])) {
             this.sendLongSMS(options, callback);
         } else {
-            this.sendOneSMS(options, callback);
+            this.sendShortSMS(options, callback);
         }
     }
 };
