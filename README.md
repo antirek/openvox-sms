@@ -7,8 +7,8 @@ Intro
 =====
 
 OpenVox VoxStack GSM-gateway have inside Asterisk PBX (http://www.asterisk.org)
-Asterisk have AMI (Asterisk Manager Interface) - telnet connection 
-for exchange commands and events
+
+Asterisk have AMI (Asterisk Manager Interface) - telnet for exchange commands and events
 
 
 Install
@@ -69,7 +69,7 @@ auto split long sms to array of csms
 all params are required
 
 `````
-sendSMS({
+sms.sendSMS({
 	span: 1,                  // span of gsm board OpenVox VoxStack
 	number: '89135292926',    // number 
 	text: 'hello'             // text can be long, more than 160 for ascii sms and more than 70 for non-ascii sms
