@@ -36,7 +36,7 @@ sms.open(function () {
 API
 ===
 
-**new osms(options)**
+**var sms = new osms(options)**
 
 init osms object
 
