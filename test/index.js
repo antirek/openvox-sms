@@ -1,10 +1,11 @@
 var expect = require('expect.js');
 var osms = require('../index');
 
-describe('SMS', function() {
+var sms = new osms();
 
-  it('validate options for send short sms', function() {
-    var sms = new osms();
+describe('SMS', function () {
+
+  it('validate options for send short sms', function () {    
     var result = sms.validateOptionsForShortSMS({
                       text: '1234',
                       span: 1,
@@ -15,8 +16,7 @@ describe('SMS', function() {
     expect(result).to.eql(true);
   });
 
-  it('validate options for send concatenated sms', function() {
-    var sms = new osms();
+  it('validate options for send concatenated sms', function () {    
     var result = sms.validateOptionsForCSMS({
                       text: '1234',
                       span: 1,
@@ -31,7 +31,6 @@ describe('SMS', function() {
   });
 
   it('validate right command string for SMS', function() {
-    var sms = new osms();
     var command = sms.getSendSMSCommand({
                       text: '1234',
                       span: 1,
@@ -43,7 +42,6 @@ describe('SMS', function() {
   });
 
   it('validate right command string for CSMS', function() {
-    var sms = new osms();
     var command = sms.getSendCSMSCommand({
                       text: '1234',
                       span: 1,
@@ -57,20 +55,36 @@ describe('SMS', function() {
     expect(command).to.eql('gsm send sync csms 1 100 "1234" 0 3 2 20');
   });
 
-  it('validate string must be ASCIII', function() {
-    var sms = new osms();
+  it('validate string must be ASCIII', function () {    
     var text = 'lopata';
     var result = sms.isASCII(text);
 
     expect(result).to.eql(true);
   });
 
-  it('validate string must be non-ASCIII', function() {
-    var sms = new osms();
+  it('validate string must be non-ASCIII', function () {
     var text = 'лопата';
     var result = sms.isASCII(text);
 
     expect(result).to.eql(false);
+  });
+
+  it('validate string is long sms (false)', function () {
+    var text = 'лопата';
+
+    var result = sms.isLongSMSText(text);
+
+    expect(result).to.eql(false);
+  });
+
+  it('validate string is long sms (true)', function () {
+    var text = 'lopata lopata lopata lopata lopata lopata lopata lopata lopata lopata' + 
+               'lopata lopata lopata lopata lopata lopata lopata lopata lopata lopata' + 
+               'lopata lopata lopata lopata lopata lopata lopata lopata lopata lopata';
+
+    var result = sms.isLongSMSText(text);
+
+    expect(result).to.eql(true);
   });
 
   /*

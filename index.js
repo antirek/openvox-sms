@@ -134,9 +134,12 @@ osms.prototype.sendLongSMS = function (options, callback) {
 };
 
 osms.prototype.setSMSsize = function (text) {
-    if (!this.isASCII(text)) {  //default 7bit        
+    if (!this.isASCII(text)) {
         this.SMS_SIZE = 70;     //16bit
         this.CSMS_SIZE = 70 - 3;
+    }else{
+        this.SMS_SIZE = 160;     //7bit
+        this.CSMS_SIZE = 160 - 8;
     };
 };
 
@@ -144,15 +147,24 @@ osms.prototype.isLongSMSText = function (text) {
     return text.length > this.SMS_SIZE;
 };
 
-osms.prototype.sendSMS = function (options, callback) {
-    if (options && options['text']) {
-        this.setSMSsize(options['text']);
+osms.prototype.validate = function (options) {
+    return options && options['text'] &&
+       options['number'] && options['span'];
+};
 
-        if (this.isLongSMSText(options['text'])) {
+osms.prototype.sendSMS = function (options, callback) {
+    if (this.validate(options)) {
+        var text = options['text'];
+
+        this.setSMSsize(text);
+        
+        if (this.isLongSMSText(text)) {
             this.sendLongSMS(options, callback);
         } else {
             this.sendShortSMS(options, callback);
         }
+    }else{
+        throw new Error('Not valid options');
     }
 };
 
