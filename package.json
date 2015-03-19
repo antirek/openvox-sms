@@ -1,6 +1,6 @@
 {
   "name": "openvox-sms",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "OpenVox VoxStack GSM-gateway sms sender",
   "main": "index.js",
   "scripts": {

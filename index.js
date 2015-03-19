@@ -23,6 +23,10 @@ osms.prototype.open = function (callback) {
     this.ami.open();
 };
 
+osms.prototype.close = function () {
+    this.ami.close();
+};
+
 osms.prototype.send = function (action, callback) {
     this.ami.send(action, callback);
 };
@@ -163,7 +167,7 @@ osms.prototype.sendSMS = function (options, callback) {
         } else {
             this.sendShortSMS(options, callback);
         }
-    }else{
+    } else {
         throw new Error('Not valid options');
     }
 };
