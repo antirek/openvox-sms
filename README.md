@@ -76,6 +76,14 @@ sms.sendSMS({
 	}, callback);             // callback receive one response for short sms or array for long sms
 `````
 
+**sms.close()**
+
+close connection
+
+`````
+sms.close();
+`````
+
 
 Tests
 =====
