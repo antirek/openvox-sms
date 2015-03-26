@@ -1,4 +1,6 @@
-var Nami = require("nami");
+'use strict';
+
+var AsteriskManager = new require('asterisk-manager');
 
 var osms = function (options) {
 
@@ -6,29 +8,31 @@ var osms = function (options) {
     this.SMS_SIZE = 160;
     this.CSMS_SIZE = 160 - 8;
 
-    this.ami = new Nami.Nami({
+    var config = {
         host: options['host'] || 'localhost',
         port: options['port'] || 5038,
         username: options['username'] || 'admin',
         secret: options['secret'] || 'admin'
-    });
+    };
+    console.log(config);
+    this.ami = new AsteriskManager(config.port, config.host, config.username, config.secret);    
 };
 
 osms.prototype.on = function (evt, callback) {
     this.ami.on(evt, callback);
 };
 
-osms.prototype.open = function (callback) {
-    this.on('namiConnected', callback);
-    this.ami.open();
-};
+osms.prototype.isConnected = function () {
+    return this.ami.isConnected();
+}
 
-osms.prototype.close = function () {
-    this.ami.close();
+osms.prototype.close = function (callback) {
+    this.ami.disconnect(callback);
 };
 
 osms.prototype.send = function (action, callback) {
-    this.ami.send(action, callback);
+    //console.log('send', action);
+    this.ami.action(action, callback);
 };
 
 osms.prototype.validateOptionsForShortSMS = function (options) {
@@ -87,17 +91,22 @@ osms.prototype.sendShortSMS = function (options, callback) {
     options['timeout'] = options['timeout'] || '20';
     this.validateOptionsForShortSMS(options);
 
-    var Command = new Nami.Actions.Command();
-    Command.command = this.getSendSMSCommand(options);
-    this.send(Command, callback);
+    var action = {
+        action: 'Command',
+        command: this.getSendSMSCommand(options)
+    };
+
+    this.send(action, callback);
 };
 
 osms.prototype.sendCSMS = function (options, callback) {
     this.validateOptionsForCSMS(options);
 
-    var Command = new Nami.Actions.Command();
-    Command.command = this.getSendCSMSCommand(options);
-    this.send(Command, callback);
+    var action = {
+        action: 'Command',
+        command: this.getSendCSMSCommand(options)
+    }
+    this.send(action, callback);
 };
 
 osms.prototype.isASCII = function (str) {

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/antirek/openvox-sms",
   "dependencies": {
-    "nami": "^0.6.6"
+    "asterisk-manager": "^0.1.15"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
