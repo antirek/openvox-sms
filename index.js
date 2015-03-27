@@ -14,8 +14,9 @@ var osms = function (options) {
         username: options['username'] || 'admin',
         secret: options['secret'] || 'admin'
     };
-    console.log(config);
-    this.ami = new AsteriskManager(config.port, config.host, config.username, config.secret);    
+
+    this.ami = new AsteriskManager(config.port, config.host, config.username, config.secret); 
+    //why port using before host???
 };
 
 osms.prototype.on = function (evt, callback) {
@@ -24,14 +25,17 @@ osms.prototype.on = function (evt, callback) {
 
 osms.prototype.isConnected = function () {
     return this.ami.isConnected();
-}
+};
+
+osms.prototype.keepConnected = function () {
+    return this.ami.keepConnected();
+};
 
 osms.prototype.close = function (callback) {
     this.ami.disconnect(callback);
 };
 
 osms.prototype.send = function (action, callback) {
-    //console.log('send', action);
     this.ami.action(action, callback);
 };
 
@@ -133,14 +137,15 @@ osms.prototype.prepareCSMSArray = function (options) {
 };
 
 osms.prototype.sendLongSMS = function (options, callback) {
-    var responses = [],
+    var responses = [], errors = [],
         array = this.prepareCSMSArray(options);
 
     array.map(function (csms, i, array) {
-        this.sendCSMS(csms, function (response) {
+        this.sendCSMS(csms, function (error, response) {
             responses.push(response);
+            errors.push(error);            
             if (i == array.length - 1) {
-                callback(responses);
+                callback(errors, responses);
             }
         });
     }, this);
