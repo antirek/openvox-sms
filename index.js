@@ -143,9 +143,14 @@ osms.prototype.sendLongSMS = function (options, callback) {
     array.map(function (csms, i, array) {
         this.sendCSMS(csms, function (error, response) {
             responses.push(response);
-            errors.push(error);            
+            if (error) errors.push(error);
+
             if (i == array.length - 1) {
-                callback(errors, responses);
+                if (errors.length == 0) {
+                    callback(null, responses);
+                } else {
+                    callback(errors, responses);
+                }
             }
         });
     }, this);
